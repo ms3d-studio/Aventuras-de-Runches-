@@ -1,110 +1,354 @@
 <!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AVENTURAS DE RUNCHES</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AVENTURAS DE RUNCHES</title>
+<style>
+  :root{
+    --bg:#f7f4ef;
+    --card:#fffaf3;
+    --muted:#6b6b6b;
+    --accent:#c89a5a;
+    --text:#3a2e1f;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text)}
+  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .frame{width:100%;max-width:980px;background:linear-gradient(180deg,#fffaf3,#fffdf9);border-radius:16px;box-shadow:0 20px 50px rgba(25,20,15,0.08);overflow:hidden;display:flex;flex-direction:column}
+  header{padding:28px 22px 6px;text-align:center}
+  header h1{margin:0;font-size:26px;letter-spacing:3px}
+  header p{margin:8px 0 0;color:var(--muted)}
+  /* slides area */
+  .slides{position:relative;flex:1;min-height:60vh;display:flex;align-items:center;justify-content:center;padding:18px}
+  .slide{position:absolute;inset:0;padding:18px;opacity:0;pointer-events:none;transition:opacity .8s ease,transform .8s ease;display:flex;flex-direction:column;align-items:center}
+  .slide.active{opacity:1;pointer-events:auto}
+  .titlebar{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+  .titlebar h2{margin:0;font-size:18px;text-transform:uppercase;letter-spacing:2px}
+  .titlebar span{color:var(--muted);font-size:13px}
+  .collage{width:100%;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:120px;gap:10px;align-items:stretch}
+  .collage img{width:100%;height:100%;object-fit:cover;border-radius:10px;box-shadow:0 6px 18px rgba(25,20,15,0.06);transition:transform .3s ease}
+  .collage img:hover{transform:scale(1.03)}
+  /* make some images span more for "instagram" feeling */
+  .collage img.span-2{grid-row:span 2}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;padding:14px;border-top:1px solid rgba(0,0,0,0.04);background:transparent}
+  .btn{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 18px rgba(0,0,0,0.06)}
+  .txt-muted{color:var(--muted);font-size:13px}
+  /* nav arrows */
+  .nav-arrows{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px}
+  .nav-arrows button{background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);padding:8px;border-radius:10px;cursor:pointer}
+  /* start overlay (for mobile autoplay safety) */
+  .start-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,244,239,0.9),rgba(247,244,239,0.95));display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:40}
+  .start-btn{background:var(--accent);color:white;padding:14px 18px;border-radius:12px;border:none;font-size:16px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+  /* modal */
+  .modal-back{position:fixed;inset:0;background:rgba(10,10,10,0.45);display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;pointer-events:none;transition:opacity .25s ease}
+  .modal-back.show{opacity:1;pointer-events:auto}
+  .modal{background:var(--card);padding:20px;border-radius:12px;max-width:520px;width:92%;box-shadow:0 20px 50px rgba(10,10,10,0.12)}
+  .modal h3{margin:0 0 8px}
+  .cipher{font-family:monospace;background:#fff8f2;padding:12px;border-radius:8px;border:1px dashed #e6dfd0;letter-spacing:3px}
+  .modal .row{margin-top:12px;display:flex;gap:8px}
+  .modal input{flex:1;padding:10px;border-radius:8px;border:1px solid #ddd}
+  .modal .result{margin-top:12px;font-weight:700;color:var(--text)}
+  /* responsive */
+  @media (max-width:900px){
+    .collage{grid-template-columns:repeat(2,1fr);grid-auto-rows:110px}
+    .collage img.span-2{grid-row:span 2}
+  }
+  @media (max-width:520px){
+    .frame{border-radius:0;height:100vh}
+    .collage{grid-template-columns:repeat(1,1fr);grid-auto-rows:220px}
+    .titlebar h2{font-size:16px}
+    .nav-arrows{display:none}
+    .start-btn{padding:12px 16px}
+  }
+</style>
 </head>
 <body>
-  <audio id="bg-music" src="music.mp3" autoplay loop></audio>
+<div class="wrap">
+  <div class="frame" role="application" aria-label="Album Aventuras de Runches">
+    <header>
+      <h1>AVENTURAS DE RUNCHES</h1>
+      <p class="txt-muted">Nuestros recuerdos — deja que la presentación los recorra</p>
+    </header>
 
-  <header>
-    <h1>AVENTURAS DE RUNCHES</h1>
-  </header>
+    <!-- slides -->
+    <div class="slides" id="slidesRoot">
+      <!-- PORTUGAL -->
+      <section class="slide active" data-index="0">
+        <div class="titlebar"><div><h2>Portugal</h2><span>Abril 2023</span></div></div>
+        <div class="collage">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=10ICSm0TAkdlRGKG8fQR7pIdhfiLqMje9" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=12dbJQz9PdUket02OjKkH-Qq_B0hRv5Nv" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1Atvzu7oWYI6gC4lBwsX35PxGwNeucWon" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1PAKvbjs0UkRsjvPMKOsFcR6H3_SiFZvh" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1aEWCHuTYEr6vPLPMox7F5zWn4JeQv8rw" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1dwveU5UlD128AASBq742z9ySunPoJXQW" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1g-zc61GQCrRikgjlq8YilaBYYssA41Mh" alt="">
+        </div>
+      </section>
 
-  <main class="album">
-    <!-- PORTUGAL -->
-    <section class="slide active">
-      <h2>PORTUGAL — ABRIL 2023</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=10ICSm0TAkdlRGKG8fQR7pIdhfiLqMje9" />
-        <img src="https://drive.google.com/uc?export=view&id=12dbJQz9PdUket02OjKkH-Qq_B0hRv5Nv" />
-        <img src="https://drive.google.com/uc?export=view&id=1Atvzu7oWYI6gC4lBwsX35PxGwNeucWon" />
-        <img src="https://drive.google.com/uc?export=view&id=1PAKvbjs0UkRsjvPMKOsFcR6H3_SiFZvh" />
-        <img src="https://drive.google.com/uc?export=view&id=1aEWCHuTYEr6vPLPMox7F5zWn4JeQv8rw" />
-        <img src="https://drive.google.com/uc?export=view&id=1dwveU5UlD128AASBq742z9ySunPoJXQW" />
-        <img src="https://drive.google.com/uc?export=view&id=1g-zc61GQCrRikgjlq8YilaBYYssA41Mh" />
-      </div>
-    </section>
+      <!-- ASTURIAS -->
+      <section class="slide" data-index="1">
+        <div class="titlebar"><div><h2>Asturias</h2><span>Junio 2023</span></div></div>
+        <div class="collage">
+          <img src="https://drive.google.com/uc?export=view&id=13RxkLoycb_WuxJ7CtKChmJhhI2wEKYhG" alt="">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=14ryEU9tjriuR5JOfFmKHvIeMyLDjNHcL" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1BE48ZeCOXLYOzJ74VqKk4O2LCR-VbxI0" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1QHEKHjTej1LSLKTcklcgKeYeENjqc13b" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1UYiYCmQSrsOrhy7ApUfZNlD-A2BCk7GL" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1XJxBV7qASJwcwMqSBBkk2Gn8L6RZIePb" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1eNwc6QHAO3Px2wNb8-4cTlhwv209Jcgu" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1i7N-tMRiddQsJ68vOnzxjPc4YcRSz_Hd" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1uBxk2yvyCF45eClu_h8SRaevMD3aecbu" alt="">
+        </div>
+      </section>
 
-    <!-- ASTURIAS -->
-    <section class="slide">
-      <h2>ASTURIAS — JUNIO 2023</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=13RxkLoycb_WuxJ7CtKChmJhhI2wEKYhG" />
-        <img src="https://drive.google.com/uc?export=view&id=14ryEU9tjriuR5JOfFmKHvIeMyLDjNHcL" />
-        <img src="https://drive.google.com/uc?export=view&id=1BE48ZeCOXLYOzJ74VqKk4O2LCR-VbxI0" />
-        <img src="https://drive.google.com/uc?export=view&id=1QHEKHjTej1LSLKTcklcgKeYeENjqc13b" />
-        <img src="https://drive.google.com/uc?export=view&id=1UYiYCmQSrsOrhy7ApUfZNlD-A2BCk7GL" />
-      </div>
-    </section>
+      <!-- LANZAROTE -->
+      <section class="slide" data-index="2">
+        <div class="titlebar"><div><h2>Lanzarote</h2><span>Febrero 2024</span></div></div>
+        <div class="collage">
+          <img src="https://drive.google.com/uc?export=view&id=1-NKm_hmWWrbuZ25VNlC67tOiCu-V6KM4" alt="">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=183Mue5bTtM_F0au78701WS1w6bG-XlvS" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1Le9LbPVGrx6z8l1Cw6Xq4azBsS6LiDiU" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1Y4dbEqrEs885AEUqSJTn1xzSlJw_Stxw" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1dcJ-xIs7ZBKWh9Txy5ZFnJki821lLLGz" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1hhCPf2knHTjqbu0rXFULmvDuM48aA2Fp" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1rxkymN8lwX78TSnVnYQ0JeO6U-rhDEDr" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1xHc2i6yXcHK11Mqr6T8kCo8UjdBpR6An" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1y-E7xxYvcXUEEmEI-dS8EnTsypHrRgIH" alt="">
+        </div>
+      </section>
 
-    <!-- LANZAROTE -->
-    <section class="slide">
-      <h2>LANZAROTE — FEBRERO 2024</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=1-NKm_hmWWrbuZ25VNlC67tOiCu-V6KM4" />
-        <img src="https://drive.google.com/uc?export=view&id=183Mue5bTtM_F0au78701WS1w6bG-XlvS" />
-        <img src="https://drive.google.com/uc?export=view&id=1Le9LbPVGrx6z8l1Cw6Xq4azBsS6LiDiU" />
-        <img src="https://drive.google.com/uc?export=view&id=1Y4dbEqrEs885AEUqSJTn1xzSlJw_Stxw" />
-      </div>
-    </section>
+      <!-- AZORES -->
+      <section class="slide" data-index="3">
+        <div class="titlebar"><div><h2>Azores</h2><span>Septiembre 2024</span></div></div>
+        <div class="collage">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=14CS22llZamFcYDW3HkDF8J7rcKEA9hwe" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=15P5poxiLcszoKWQ8BhiOnKo7StWLiASR" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=15Tt08guZ7A7MPumJ1-Ej_i2Wym1SslVK" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=19Bk6xo5WkcnrSN4iVLppv786V93kkHjT" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=19gWvN-rEKpFryL2pZnbwvX8s8N_Os3cq" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1A3yA0gQkuPnXbJ5QaS8fEQtPCkBW1Y7J" alt="">
+        </div>
+      </section>
 
-    <!-- AZORES -->
-    <section class="slide">
-      <h2>AZORES — SEPTIEMBRE 2024</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=14CS22llZamFcYDW3HkDF8J7rcKEA9hwe" />
-        <img src="https://drive.google.com/uc?export=view&id=15P5poxiLcszoKWQ8BhiOnKo7StWLiASR" />
-        <img src="https://drive.google.com/uc?export=view&id=15Tt08guZ7A7MPumJ1-Ej_i2Wym1SslVK" />
-        <img src="https://drive.google.com/uc?export=view&id=19Bk6xo5WkcnrSN4iVLppv786V93kkHjT" />
-      </div>
-    </section>
+      <!-- BARCELONA -->
+      <section class="slide" data-index="4">
+        <div class="titlebar"><div><h2>Barcelona</h2><span>Abril 2025</span></div></div>
+        <div class="collage">
+          <img src="https://drive.google.com/uc?export=view&id=186GEER7hR2EDqiJ5GSNkoBZnjfD5GaM_" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1EsNpHhfJLz69K_XPr8naIk8enkoMOgfa" alt="">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=1GN5D2URt7h-S_82pqiVIPoS0Qe-jL7xt" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1I-dFiR2D7BdC1akfHmPTxR0XEyDy6BvQ" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1ThtF1hseEpujM06gcQHYhD_spyfb-gQt" alt="">
+        </div>
+      </section>
 
-    <!-- BARCELONA -->
-    <section class="slide">
-      <h2>BARCELONA — ABRIL 2025</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=186GEER7hR2EDqiJ5GSNkoBZnjfD5GaM_" />
-        <img src="https://drive.google.com/uc?export=view&id=1EsNpHhfJLz69K_XPr8naIk8enkoMOgfa" />
-        <img src="https://drive.google.com/uc?export=view&id=1GN5D2URt7h-S_82pqiVIPoS0Qe-jL7xt" />
-        <img src="https://drive.google.com/uc?export=view&id=1I-dFiR2D7BdC1akfHmPTxR0XEyDy6BvQ" />
-      </div>
-    </section>
+      <!-- ALBUFEIRA -->
+      <section class="slide" data-index="5">
+        <div class="titlebar"><div><h2>Albufeira</h2><span>Agosto 2025</span></div></div>
+        <div class="collage">
+          <img src="https://drive.google.com/uc?export=view&id=1DeZyoy2IHn-_ias-o7p0IQGULezNe5E5" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1Fk9gzfnETyCZMSYkca97HToM3prs8bln" alt="">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=1HYio4co_sv_VKseO1ogZdb2uKKjiu1Dd" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1OVfGm0Zw3w4ixMWkZHxK8GxeibDkgChL" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=1VxF-VUuakrDHhgdL-TUBdAWWNbkJHmZu" alt="">
+        </div>
+      </section>
 
-    <!-- ALBUFEIRA -->
-    <section class="slide">
-      <h2>ALBUFEIRA — AGOSTO 2025</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=1DeZyoy2IHn-_ias-o7p0IQGULezNe5E5" />
-        <img src="https://drive.google.com/uc?export=view&id=1Fk9gzfnETyCZMSYkca97HToM3prs8bln" />
-        <img src="https://drive.google.com/uc?export=view&id=1HYio4co_sv_VKseO1ogZdb2uKKjiu1Dd" />
-        <img src="https://drive.google.com/uc?export=view&id=1OVfGm0Zw3w4ixMWkZHxK8GxeibDkgChL" />
-      </div>
-    </section>
+      <!-- RUNCHETORRIS (last) -->
+      <section class="slide" data-index="6">
+        <div class="titlebar"><div><h2>Runchetorris ♾️</h2><span>Para siempre</span></div></div>
+        <div class="collage">
+          <img src="https://drive.google.com/uc?export=view&id=10uzVqKpvyDSBcm-WapS5ACM_w-4y9Li5" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=11hG8HzadQOvX_Q-KEiln9z2mKJNj0BNw" alt="">
+          <img class="span-2" src="https://drive.google.com/uc?export=view&id=14tIvU-Vn2tKlfR1e7PRpRp4bItJZqoBf" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=15f8N9BLgYAbhm8YszBOqfIJTmH8EVKQO" alt="">
+          <img src="https://drive.google.com/uc?export=view&id=16A9VJy2FmLj18dltHvcLyEwDXZ2SFaHl" alt="">
+        </div>
 
-    <!-- FINAL -->
-    <section class="slide">
-      <h2>RUNCHETORRIS ♾️</h2>
-      <div class="collage">
-        <img src="https://drive.google.com/uc?export=view&id=10uzVqKpvyDSBcm-WapS5ACM_w-4y9Li5" />
-        <img src="https://drive.google.com/uc?export=view&id=11hG8HzadQOvX_Q-KEiln9z2mKJNj0BNw" />
-        <img src="https://drive.google.com/uc?export=view&id=14tIvU-Vn2tKlfR1e7PRpRp4bItJZqoBf" />
-      </div>
+        <div style="margin-top:18px;display:flex;gap:10px;justify-content:center">
+          <button id="showCipher" class="btn">Descubrir pista</button>
+        </div>
+      </section>
+    </div>
 
-      <div class="mensaje-final">
-        <button id="revelar">✨ Descifrar mensaje ✨</button>
-        <p id="descifrado" class="oculto"></p>
-      </div>
-    </section>
-  </main>
+    <div class="nav-arrows" aria-hidden="false">
+      <button id="prev" title="Anterior">◀</button>
+      <button id="next" title="Siguiente">▶</button>
+    </div>
 
-  <div class="controls">
-    <button class="prev">←</button>
-    <button class="next">→</button>
+    <div class="controls">
+      <div class="txt-muted">Avance automático • 8s por destino • Se detiene al final</div>
+      <div style="flex:1"></div>
+      <button id="pauseBtn" class="btn">Pausa</button>
+    </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<!-- start overlay (for autoplay fallback) -->
+<div class="start-overlay" id="startOverlay" style="display:none">
+  <div style="text-align:center">
+    <h2 style="color:var(--text);margin-bottom:10px">AVENTURAS DE RUNCHES</h2>
+    <p style="color:var(--muted);margin-bottom:18px">Pulsa para empezar y activar la música</p>
+    <button id="startBtn" class="start-btn">Empezar álbum</button>
+  </div>
+</div>
+
+<!-- modal for cipher -->
+<div class="modal-back" id="modalBack" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">Pista final (cifrado Vigenère)</h3>
+    <div class="cipher">VF EGNEDF YFVH IF DUTPBQ</div>
+    <div class="row">
+      <input id="keyInput" placeholder="Introduce la clave..." aria-label="Clave">
+      <button id="decBtn" class="btn">Descifrar</button>
+    </div>
+    <div class="result" id="decResult" style="margin-top:12px"></div>
+    <div style="margin-top:12px;text-align:right">
+      <button id="closeModal" class="btn" style="background:#eee;color:var(--text)">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // slide management
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let idx = 0;
+  let timer = null;
+  const DURATION = 8000; // 8s
+  const pauseBtn = document.getElementById('pauseBtn');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const showCipher = document.getElementById('showCipher');
+  const modalBack = document.getElementById('modalBack');
+  const decBtn = document.getElementById('decBtn');
+  const decResult = document.getElementById('decResult');
+  const closeModal = document.getElementById('closeModal');
+  const keyInput = document.getElementById('keyInput');
+
+  const audio = new Audio('audio/music.mp3');
+  audio.preload = 'auto';
+  audio.loop = false; // play once
+  audio.volume = 0.14;
+
+  // autoplay attempt, but show start overlay if blocked
+  const startOverlay = document.getElementById('startOverlay');
+  async function tryAutoplay(){
+    try {
+      await audio.play();
+      startOverlay.style.display='none';
+    } catch(e){
+      // blocked -> show overlay so user can tap once
+      startOverlay.style.display='flex';
+    }
+  }
+  // start button if needed
+  document.getElementById('startBtn')?.addEventListener('click', ()=> {
+    startOverlay.style.display='none';
+    audio.play().catch(()=>{});
+    startAuto();
+  });
+
+  // show initial slide
+  function show(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    slides[i].classList.add('active');
+    idx = i;
+    // when last slide reached, stop timer (do not loop)
+    if(idx === slides.length -1) stopAuto();
+  }
+
+  // auto progression
+  function startAuto(){
+    stopAuto();
+    timer = setInterval(()=>{
+      if(idx < slides.length -1){
+        show(idx+1);
+      } else {
+        stopAuto();
+      }
+    }, DURATION);
+  }
+  function stopAuto(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  // initial
+  show(0);
+  tryAutoplay();
+  startAuto();
+
+  // controls
+  pauseBtn.addEventListener('click', ()=>{
+    if(timer){ stopAuto(); pauseBtn.textContent='Reanudar'; } else { startAuto(); pauseBtn.textContent='Pausa'; }
+  });
+  prev.addEventListener('click', ()=>{
+    if(idx>0) show(idx-1);
+  });
+  next.addEventListener('click', ()=>{
+    if(idx < slides.length-1) show(idx+1);
+  });
+
+  // arrow keys
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight') next.click();
+    if(e.key === 'ArrowLeft') prev.click();
+  });
+
+  // modal open/close
+  showCipher?.addEventListener('click', ()=>{ modalBack.classList.add('show'); modalBack.setAttribute('aria-hidden','false'); keyInput.focus(); });
+  closeModal.addEventListener('click', ()=>{ modalBack.classList.remove('show'); modalBack.setAttribute('aria-hidden','true'); decResult.textContent=''; keyInput.value=''; });
+
+  // Vigenere decode (ciphertext is uppercase with spaces)
+  function decodeVigenere(ct, key){
+    ct = ct.toUpperCase();
+    key = (key||'').toUpperCase().replace(/[^A-Z]/g,'');
+    if(!key) return '';
+    let res = '';
+    let ki = 0;
+    for(let i=0;i<ct.length;i++){
+      const c = ct.charCodeAt(i);
+      if(c>=65 && c<=90){
+        const k = key.charCodeAt(ki % key.length) - 65;
+        const dec = ((c - 65 - k + 26) % 26) + 65;
+        res += String.fromCharCode(dec);
+        ki++;
+      } else res += ct.charAt(i);
+    }
+    return res;
+  }
+
+  decBtn.addEventListener('click', ()=>{
+    const k = keyInput.value.trim();
+    if(!k){ decResult.textContent='Introduce una clave.'; decResult.style.color='var(--muted)'; return; }
+    const decoded = decodeVigenere('VF EGNEDF YFVH IF DUTPBQ', k);
+    if(decoded){
+      // expected message: "EL REGALO ESTA EN MAGNUM" or final personal message
+      // show localized final message if key correct (we check contains 'EL REGALO' or exact)
+      if(decoded.replace(/\s+/g,'').toUpperCase().includes('ELREGALO')){
+        decResult.style.color='green';
+        decResult.textContent = 'EL REGALO ESTÁ EN MAGNUM';
+        // also show the romantic message and animate
+        setTimeout(()=> {
+          decResult.textContent += '\\n\\nPor más aventuras juntos ❤️';
+          decResult.style.whiteSpace='pre-line';
+        }, 500);
+      } else {
+        decResult.style.color='var(--text)';
+        decResult.textContent = decoded;
+      }
+    } else {
+      decResult.textContent = 'No se pudo descifrar.';
+    }
+  });
+
+  // accessibility: close modal on ESC
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal.click(); } });
+
+  // If autoplay failed and user hasn't clicked start overlay, still allow pressing anywhere to start music & slideshow
+  document.body.addEventListener('click', function onFirst(){ audio.play().catch(()=>{}); startAuto(); document.body.removeEventListener('click', onFirst); }, { once:true });
+})();
+</script>
 </body>
 </html>
