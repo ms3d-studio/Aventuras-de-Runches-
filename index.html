@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <!doctype html>
 <html lang="es">
 <head>
@@ -9,185 +8,227 @@
   :root{
     --bg:#f7f4ef;
     --card:#fffaf3;
-    --muted:#6b6b6b;
+    --muted:#7a6a56;
     --accent:#c89a5a;
     --text:#3a2e1f;
   }
   *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text)}
-  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .frame{width:100%;max-width:980px;background:linear-gradient(180deg,#fffaf3,#fffdf9);border-radius:16px;box-shadow:0 20px 50px rgba(25,20,15,0.08);overflow:hidden;display:flex;flex-direction:column}
-  header{padding:28px 22px 6px;text-align:center}
-  header h1{margin:0;font-size:26px;letter-spacing:3px}
-  header p{margin:8px 0 0;color:var(--muted)}
-  /* slides area */
-  .slides{position:relative;flex:1;min-height:60vh;display:flex;align-items:center;justify-content:center;padding:18px}
-  .slide{position:absolute;inset:0;padding:18px;opacity:0;pointer-events:none;transition:opacity .8s ease,transform .8s ease;display:flex;flex-direction:column;align-items:center}
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:var(--text)}
+  /* frame */
+  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+  .frame{width:100%;max-width:980px;background:linear-gradient(180deg,var(--card),#fffdf9);border-radius:14px;box-shadow:0 20px 50px rgba(20,18,15,0.08);overflow:hidden;display:flex;flex-direction:column}
+  header{padding:22px 18px 8px;text-align:center}
+  header h1{margin:0;font-size:22px;letter-spacing:3px}
+  header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+  /* slides */
+  .slides{position:relative;flex:1;min-height:62vh;display:flex;align-items:center;justify-content:center;padding:12px}
+  .slide{position:absolute;inset:0;padding:18px;opacity:0;pointer-events:none;transition:opacity .7s ease,transform .7s ease;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
   .slide.active{opacity:1;pointer-events:auto}
-  .titlebar{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
-  .titlebar h2{margin:0;font-size:18px;text-transform:uppercase;letter-spacing:2px}
-  .titlebar span{color:var(--muted);font-size:13px}
-  .collage{width:100%;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:120px;gap:10px;align-items:stretch}
-  .collage img{width:100%;height:100%;object-fit:cover;border-radius:10px;box-shadow:0 6px 18px rgba(25,20,15,0.06);transition:transform .3s ease}
-  .collage img:hover{transform:scale(1.03)}
-  /* make some images span more for "instagram" feeling */
-  .collage img.span-2{grid-row:span 2}
-  .controls{display:flex;gap:12px;align-items:center;justify-content:center;padding:14px;border-top:1px solid rgba(0,0,0,0.04);background:transparent}
-  .btn{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 18px rgba(0,0,0,0.06)}
-  .txt-muted{color:var(--muted);font-size:13px}
+  .title-floating{
+    position:absolute;top:28%;left:50%;transform:translate(-50%,-50%);z-index:30;padding:10px 16px;border-radius:12px;background:rgba(255,250,245,0.92);box-shadow:0 10px 30px rgba(25,20,15,0.06);text-align:center;animation:popTitle .9s ease;
+  }
+  .title-floating h2{margin:0;font-size:20px;letter-spacing:2px;text-transform:uppercase;color:var(--text)}
+  .title-floating span{display:block;color:var(--muted);font-size:13px;margin-top:6px}
+
+  @keyframes popTitle {
+    0%{opacity:0;transform:translate(-50%,-60%) scale(.96)}
+    60%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}
+    100%{transform:translate(-50%,-50%) scale(1)}
+  }
+
+  /* grid collage classic */
+  .collage{
+    width:100%;
+    max-width:920px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-auto-rows:140px;
+    gap:12px;
+    margin-top:90px;
+    padding:6px;
+  }
+  .collage img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:12px;
+    box-shadow:0 8px 26px rgba(20,18,15,0.06);
+    transform:scale(1.02);
+    transition:transform .6s ease,filter .45s ease,opacity .6s ease;
+    opacity:0;
+  }
+  .collage img.show{opacity:1;transform:scale(1)}
+  /* make some images larger for variety */
+  .collage img.lg{grid-row:span 2}
+  .collage img.wide{grid-column:span 2}
+
+  /* controls bottom */
+  .controls{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid rgba(0,0,0,0.04);background:transparent}
+  .controls .info{color:var(--muted);font-size:13px}
+  .btn{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 10px 24px rgba(200,154,90,0.12)}
+  .small{background:#efe6d7;color:var(--text);padding:8px 10px;border-radius:8px}
+
   /* nav arrows */
-  .nav-arrows{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px}
-  .nav-arrows button{background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);padding:8px;border-radius:10px;cursor:pointer}
-  /* start overlay (for mobile autoplay safety) */
-  .start-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,244,239,0.9),rgba(247,244,239,0.95));display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:40}
-  .start-btn{background:var(--accent);color:white;padding:14px 18px;border-radius:12px;border:none;font-size:16px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+  .nav-arrows{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:40}
+  .nav-arrows button{background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);padding:8px;border-radius:10px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,0.06)}
+  /* start overlay for autoplay fallback */
+  .start-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,244,239,0.96),rgba(247,244,239,0.98));display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:80}
+  .start-btn{background:var(--accent);color:white;padding:14px 18px;border-radius:12px;border:none;font-size:16px;cursor:pointer;box-shadow:0 12px 28px rgba(200,154,90,0.15)}
+
   /* modal */
-  .modal-back{position:fixed;inset:0;background:rgba(10,10,10,0.45);display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;pointer-events:none;transition:opacity .25s ease}
+  .modal-back{position:fixed;inset:0;background:rgba(10,10,10,0.45);display:flex;align-items:center;justify-content:center;z-index:90;opacity:0;pointer-events:none;transition:opacity .25s ease}
   .modal-back.show{opacity:1;pointer-events:auto}
-  .modal{background:var(--card);padding:20px;border-radius:12px;max-width:520px;width:92%;box-shadow:0 20px 50px rgba(10,10,10,0.12)}
-  .modal h3{margin:0 0 8px}
+  .modal{background:var(--card);padding:18px;border-radius:12px;max-width:560px;width:92%;box-shadow:0 20px 50px rgba(10,10,10,0.12)}
   .cipher{font-family:monospace;background:#fff8f2;padding:12px;border-radius:8px;border:1px dashed #e6dfd0;letter-spacing:3px}
   .modal .row{margin-top:12px;display:flex;gap:8px}
   .modal input{flex:1;padding:10px;border-radius:8px;border:1px solid #ddd}
-  .modal .result{margin-top:12px;font-weight:700;color:var(--text)}
+  .result{margin-top:12px;font-weight:700;color:var(--text)}
   /* responsive */
   @media (max-width:900px){
-    .collage{grid-template-columns:repeat(2,1fr);grid-auto-rows:110px}
-    .collage img.span-2{grid-row:span 2}
+    .collage{grid-template-columns:repeat(2,1fr);grid-auto-rows:120px;margin-top:80px}
+    .collage img.lg{grid-row:span 2}
   }
   @media (max-width:520px){
     .frame{border-radius:0;height:100vh}
-    .collage{grid-template-columns:repeat(1,1fr);grid-auto-rows:220px}
-    .titlebar h2{font-size:16px}
-    .nav-arrows{display:none}
-    .start-btn{padding:12px 16px}
+    .collage{grid-template-columns:repeat(1,1fr);grid-auto-rows:240px;margin-top:120px;padding:10px}
+    .title-floating{top:24%}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="frame" role="application" aria-label="Album Aventuras de Runches">
+  <div class="frame" role="application" aria-label="Álbum Aventuras de Runches">
     <header>
       <h1>AVENTURAS DE RUNCHES</h1>
-      <p class="txt-muted">Nuestros recuerdos — deja que la presentación los recorra</p>
+      <p class="txt-muted">Recorre nuestras aventuras — deja que la historia comience</p>
     </header>
 
-    <!-- slides -->
+    <!-- slides container -->
     <div class="slides" id="slidesRoot">
-      <!-- PORTUGAL -->
-      <section class="slide active" data-index="0">
-        <div class="titlebar"><div><h2>Portugal</h2><span>Abril 2023</span></div></div>
-        <div class="collage">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=10ICSm0TAkdlRGKG8fQR7pIdhfiLqMje9" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=12dbJQz9PdUket02OjKkH-Qq_B0hRv5Nv" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1Atvzu7oWYI6gC4lBwsX35PxGwNeucWon" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1PAKvbjs0UkRsjvPMKOsFcR6H3_SiFZvh" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1aEWCHuTYEr6vPLPMox7F5zWn4JeQv8rw" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1dwveU5UlD128AASBq742z9ySunPoJXQW" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1g-zc61GQCrRikgjlq8YilaBYYssA41Mh" alt="">
+
+      <!-- Slide: PORTUGAL (Abril 2023) -->
+      <section class="slide" data-index="0" data-place="Portugal" data-date="Abril 2023">
+        <div class="title-floating" aria-hidden="true"><h2>PORTUGAL</h2><span>Abril 2023</span></div>
+        <div class="collage" data-images>
+          <img class="lg" data-src="https://drive.google.com/uc?export=view&id=10ICSm0TAkdlRGKG8fQR7pIdhfiLqMje9" alt="Portugal">
+          <img data-src="https://drive.google.com/uc?export=view&id=12dbJQz9PdUket02OjKkH-Qq_B0hRv5Nv" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1Atvzu7oWYI6gC4lBwsX35PxGwNeucWon" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1PAKvbjs0UkRsjvPMKOsFcR6H3_SiFZvh" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1aEWCHuTYEr6vPLPMox7F5zWn4JeQv8rw" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1dwveU5UlD128AASBq742z9ySunPoJXQW" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1g-zc61GQCrRikgjlq8YilaBYYssA41Mh" alt="">
         </div>
       </section>
 
-      <!-- ASTURIAS -->
-      <section class="slide" data-index="1">
-        <div class="titlebar"><div><h2>Asturias</h2><span>Junio 2023</span></div></div>
-        <div class="collage">
-          <img src="https://drive.google.com/uc?export=view&id=13RxkLoycb_WuxJ7CtKChmJhhI2wEKYhG" alt="">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=14ryEU9tjriuR5JOfFmKHvIeMyLDjNHcL" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1BE48ZeCOXLYOzJ74VqKk4O2LCR-VbxI0" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1QHEKHjTej1LSLKTcklcgKeYeENjqc13b" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1UYiYCmQSrsOrhy7ApUfZNlD-A2BCk7GL" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1XJxBV7qASJwcwMqSBBkk2Gn8L6RZIePb" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1eNwc6QHAO3Px2wNb8-4cTlhwv209Jcgu" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1i7N-tMRiddQsJ68vOnzxjPc4YcRSz_Hd" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1uBxk2yvyCF45eClu_h8SRaevMD3aecbu" alt="">
+      <!-- Slide: ASTURIAS (Junio 2023) -->
+      <section class="slide" data-index="1" data-place="Asturias" data-date="Junio 2023">
+        <div class="title-floating" aria-hidden="true"><h2>ASTURIAS</h2><span>Junio 2023</span></div>
+        <div class="collage" data-images>
+          <img data-src="https://drive.google.com/uc?export=view&id=13RxkLoycb_WuxJ7CtKChmJhhI2wEKYhG" alt="">
+          <img class="lg" data-src="https://drive.google.com/uc?export=view&id=14ryEU9tjriuR5JOfFmKHvIeMyLDjNHcL" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1BE48ZeCOXLYOzJ74VqKk4O2LCR-VbxI0" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1QHEKHjTej1LSLKTcklcgKeYeENjqc13b" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1UYiYCmQSrsOrhy7ApUfZNlD-A2BCk7GL" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1XJxBV7qASJwcwMqSBBkk2Gn8L6RZIePb" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1eNwc6QHAO3Px2wNb8-4cTlhwv209Jcgu" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1i7N-tMRiddQsJ68vOnzxjPc4YcRSz_Hd" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1uBxk2yvyCF45eClu_h8SRaevMD3aecbu" alt="">
         </div>
       </section>
 
-      <!-- LANZAROTE -->
-      <section class="slide" data-index="2">
-        <div class="titlebar"><div><h2>Lanzarote</h2><span>Febrero 2024</span></div></div>
-        <div class="collage">
-          <img src="https://drive.google.com/uc?export=view&id=1-NKm_hmWWrbuZ25VNlC67tOiCu-V6KM4" alt="">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=183Mue5bTtM_F0au78701WS1w6bG-XlvS" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1Le9LbPVGrx6z8l1Cw6Xq4azBsS6LiDiU" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1Y4dbEqrEs885AEUqSJTn1xzSlJw_Stxw" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1dcJ-xIs7ZBKWh9Txy5ZFnJki821lLLGz" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1hhCPf2knHTjqbu0rXFULmvDuM48aA2Fp" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1rxkymN8lwX78TSnVnYQ0JeO6U-rhDEDr" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1xHc2i6yXcHK11Mqr6T8kCo8UjdBpR6An" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1y-E7xxYvcXUEEmEI-dS8EnTsypHrRgIH" alt="">
+      <!-- Slide: LANZAROTE (Febrero 2024) -->
+      <section class="slide" data-index="2" data-place="Lanzarote" data-date="Febrero 2024">
+        <div class="title-floating" aria-hidden="true"><h2>LANZAROTE</h2><span>Febrero 2024</span></div>
+        <div class="collage" data-images>
+          <img data-src="https://drive.google.com/uc?export=view&id=1-NKm_hmWWrbuZ25VNlC67tOiCu-V6KM4" alt="">
+          <img class="wide" data-src="https://drive.google.com/uc?export=view&id=183Mue5bTtM_F0au78701WS1w6bG-XlvS" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1Le9LbPVGrx6z8l1Cw6Xq4azBsS6LiDiU" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1Y4dbEqrEs885AEUqSJTn1xzSlJw_Stxw" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1dcJ-xIs7ZBKWh9Txy5ZFnJki821lLLGz" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1hhCPf2knHTjqbu0rXFULmvDuM48aA2Fp" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1rxkymN8lwX78TSnVnYQ0JeO6U-rhDEDr" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1xHc2i6yXcHK11Mqr6T8kCo8UjdBpR6An" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1y-E7xxYvcXUEEmEI-dS8EnTsypHrRgIH" alt="">
         </div>
       </section>
 
-      <!-- AZORES -->
-      <section class="slide" data-index="3">
-        <div class="titlebar"><div><h2>Azores</h2><span>Septiembre 2024</span></div></div>
-        <div class="collage">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=14CS22llZamFcYDW3HkDF8J7rcKEA9hwe" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=15P5poxiLcszoKWQ8BhiOnKo7StWLiASR" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=15Tt08guZ7A7MPumJ1-Ej_i2Wym1SslVK" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=19Bk6xo5WkcnrSN4iVLppv786V93kkHjT" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=19gWvN-rEKpFryL2pZnbwvX8s8N_Os3cq" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1A3yA0gQkuPnXbJ5QaS8fEQtPCkBW1Y7J" alt="">
+      <!-- Slide: AZORES (Septiembre 2024) -->
+      <section class="slide" data-index="3" data-place="Azores" data-date="Septiembre 2024">
+        <div class="title-floating" aria-hidden="true"><h2>AZORES</h2><span>Septiembre 2024</span></div>
+        <div class="collage" data-images>
+          <img class="lg" data-src="https://drive.google.com/uc?export=view&id=14CS22llZamFcYDW3HkDF8J7rcKEA9hwe" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=15P5poxiLcszoKWQ8BhiOnKo7StWLiASR" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=15Tt08guZ7A7MPumJ1-Ej_i2Wym1SslVK" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=19Bk6xo5WkcnrSN4iVLppv786V93kkHjT" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=19gWvN-rEKpFryL2pZnbwvX8s8N_Os3cq" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1A3yA0gQkuPnXbJ5QaS8fEQtPCkBW1Y7J" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1JMdHLgYmTLxf4N5j2geOOkJ3PA2Rw8Fc" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1Q0shoN3VFvNTIfb9H9zof6Lij7BXG1sp" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1Yl1c5SP6S0is5NELquwMCO34bgqwUNxN" alt="">
         </div>
       </section>
 
-      <!-- BARCELONA -->
-      <section class="slide" data-index="4">
-        <div class="titlebar"><div><h2>Barcelona</h2><span>Abril 2025</span></div></div>
-        <div class="collage">
-          <img src="https://drive.google.com/uc?export=view&id=186GEER7hR2EDqiJ5GSNkoBZnjfD5GaM_" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1EsNpHhfJLz69K_XPr8naIk8enkoMOgfa" alt="">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=1GN5D2URt7h-S_82pqiVIPoS0Qe-jL7xt" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1I-dFiR2D7BdC1akfHmPTxR0XEyDy6BvQ" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1ThtF1hseEpujM06gcQHYhD_spyfb-gQt" alt="">
+      <!-- Slide: BARCELONA (Abril 2025) -->
+      <section class="slide" data-index="4" data-place="Barcelona" data-date="Abril 2025">
+        <div class="title-floating" aria-hidden="true"><h2>BARCELONA</h2><span>Abril 2025</span></div>
+        <div class="collage" data-images>
+          <img data-src="https://drive.google.com/uc?export=view&id=186GEER7hR2EDqiJ5GSNkoBZnjfD5GaM_" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1EsNpHhfJLz69K_XPr8naIk8enkoMOgfa" alt="">
+          <img class="lg" data-src="https://drive.google.com/uc?export=view&id=1GN5D2URt7h-S_82pqiVIPoS0Qe-jL7xt" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1I-dFiR2D7BdC1akfHmPTxR0XEyDy6BvQ" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1ThtF1hseEpujM06gcQHYhD_spyfb-gQt" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1bYF8LFXCIUi4tDQdufTK8nMdQiHci88N" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1bYliTUZCBQZvhH-_2ZNonNjGd0zoLZGi" alt="">
         </div>
       </section>
 
-      <!-- ALBUFEIRA -->
-      <section class="slide" data-index="5">
-        <div class="titlebar"><div><h2>Albufeira</h2><span>Agosto 2025</span></div></div>
-        <div class="collage">
-          <img src="https://drive.google.com/uc?export=view&id=1DeZyoy2IHn-_ias-o7p0IQGULezNe5E5" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1Fk9gzfnETyCZMSYkca97HToM3prs8bln" alt="">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=1HYio4co_sv_VKseO1ogZdb2uKKjiu1Dd" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1OVfGm0Zw3w4ixMWkZHxK8GxeibDkgChL" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=1VxF-VUuakrDHhgdL-TUBdAWWNbkJHmZu" alt="">
+      <!-- Slide: ALBUFEIRA (Agosto 2025) -->
+      <section class="slide" data-index="5" data-place="Albufeira" data-date="Agosto 2025">
+        <div class="title-floating" aria-hidden="true"><h2>ALBUFEIRA</h2><span>Agosto 2025</span></div>
+        <div class="collage" data-images>
+          <img data-src="https://drive.google.com/uc?export=view&id=1DeZyoy2IHn-_ias-o7p0IQGULezNe5E5" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1Fk9gzfnETyCZMSYkca97HToM3prs8bln" alt="">
+          <img class="lg" data-src="https://drive.google.com/uc?export=view&id=1HYio4co_sv_VKseO1ogZdb2uKKjiu1Dd" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1OVfGm0Zw3w4ixMWkZHxK8GxeibDkgChL" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=1VxF-VUuakrDHhgdL-TUBdAWWNbkJHmZu" alt="">
         </div>
       </section>
 
-      <!-- RUNCHETORRIS (last) -->
-      <section class="slide" data-index="6">
-        <div class="titlebar"><div><h2>Runchetorris ♾️</h2><span>Para siempre</span></div></div>
-        <div class="collage">
-          <img src="https://drive.google.com/uc?export=view&id=10uzVqKpvyDSBcm-WapS5ACM_w-4y9Li5" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=11hG8HzadQOvX_Q-KEiln9z2mKJNj0BNw" alt="">
-          <img class="span-2" src="https://drive.google.com/uc?export=view&id=14tIvU-Vn2tKlfR1e7PRpRp4bItJZqoBf" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=15f8N9BLgYAbhm8YszBOqfIJTmH8EVKQO" alt="">
-          <img src="https://drive.google.com/uc?export=view&id=16A9VJy2FmLj18dltHvcLyEwDXZ2SFaHl" alt="">
+      <!-- Slide: RUNCHETORRIS (Final, Para siempre) -->
+      <section class="slide" data-index="6" data-place="Runchetorris" data-date="Para siempre">
+        <div class="title-floating" aria-hidden="true"><h2>RUNCHETORRIS ♾️</h2><span>Para siempre</span></div>
+        <div class="collage" data-images>
+          <img data-src="https://drive.google.com/uc?export=view&id=10uzVqKpvyDSBcm-WapS5ACM_w-4y9Li5" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=11hG8HzadQOvX_Q-KEiln9z2mKJNj0BNw" alt="">
+          <img class="lg" data-src="https://drive.google.com/uc?export=view&id=14tIvU-Vn2tKlfR1e7PRpRp4bItJZqoBf" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=15f8N9BLgYAbhm8YszBOqfIJTmH8EVKQO" alt="">
+          <img data-src="https://drive.google.com/uc?export=view&id=16A9VJy2FmLj18dltHvcLyEwDXZ2SFaHl" alt="">
         </div>
 
         <div style="margin-top:18px;display:flex;gap:10px;justify-content:center">
-          <button id="showCipher" class="btn">Descubrir pista</button>
+          <button id="openCipher" class="btn">Descubrir pista</button>
         </div>
       </section>
+
     </div>
 
+    <!-- nav arrows -->
     <div class="nav-arrows" aria-hidden="false">
       <button id="prev" title="Anterior">◀</button>
       <button id="next" title="Siguiente">▶</button>
     </div>
 
     <div class="controls">
-      <div class="txt-muted">Avance automático • 8s por destino • Se detiene al final</div>
+      <div class="info">Avance automático • 8s por destino • Se detiene en el final</div>
       <div style="flex:1"></div>
       <button id="pauseBtn" class="btn">Pausa</button>
     </div>
+
   </div>
 </div>
 
-<!-- start overlay (for autoplay fallback) -->
+<!-- start overlay (if autoplay blocked) -->
 <div class="start-overlay" id="startOverlay" style="display:none">
   <div style="text-align:center">
     <h2 style="color:var(--text);margin-bottom:10px">AVENTURAS DE RUNCHES</h2>
@@ -199,7 +240,7 @@
 <!-- modal for cipher -->
 <div class="modal-back" id="modalBack" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <h3 id="modalTitle">Pista final (cifrado Vigenère)</h3>
+    <h3 id="modalTitle">Pista final — cifrado Vigenère</h3>
     <div class="cipher">VF EGNEDF YFVH IF DUTPBQ</div>
     <div class="row">
       <input id="keyInput" placeholder="Introduce la clave..." aria-label="Clave">
@@ -207,102 +248,134 @@
     </div>
     <div class="result" id="decResult" style="margin-top:12px"></div>
     <div style="margin-top:12px;text-align:right">
-      <button id="closeModal" class="btn" style="background:#eee;color:var(--text)">Cerrar</button>
+      <button id="closeModal" class="small">Cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
 (function(){
-  // slide management
+  // Configuration
+  const SLIDE_DURATION = 8000; // 8s
   const slides = Array.from(document.querySelectorAll('.slide'));
-  let idx = 0;
+  const totalSlides = slides.length;
+  let index = 0;
   let timer = null;
-  const DURATION = 8000; // 8s
   const pauseBtn = document.getElementById('pauseBtn');
-  const prev = document.getElementById('prev');
-  const next = document.getElementById('next');
-  const showCipher = document.getElementById('showCipher');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const openCipher = document.getElementById('openCipher');
   const modalBack = document.getElementById('modalBack');
   const decBtn = document.getElementById('decBtn');
   const decResult = document.getElementById('decResult');
   const closeModal = document.getElementById('closeModal');
   const keyInput = document.getElementById('keyInput');
+  const startOverlay = document.getElementById('startOverlay');
+  const startBtn = document.getElementById('startBtn');
 
+  // Audio
   const audio = new Audio('audio/music.mp3');
   audio.preload = 'auto';
-  audio.loop = false; // play once
+  audio.loop = false;
   audio.volume = 0.14;
 
-  // autoplay attempt, but show start overlay if blocked
-  const startOverlay = document.getElementById('startOverlay');
-  async function tryAutoplay(){
+  // Lazy-load images for each slide when slide shown
+  function loadSlideImages(slide){
+    const imgs = slide.querySelectorAll('[data-src]');
+    imgs.forEach(img => {
+      if(!img.src || img.src.indexOf('drive.google.com/uc?export=view')===-1){
+        img.src = img.getAttribute('data-src');
+      }
+    });
+  }
+
+  // Show slide
+  function show(i){
+    if(i < 0) i = 0;
+    if(i >= slides.length) i = slides.length -1;
+    slides.forEach(s => s.classList.remove('active'));
+    const s = slides[i];
+    s.classList.add('active');
+    // animate title (it's already positioned)
+    const title = s.querySelector('.title-floating');
+    if(title){
+      title.style.opacity = 1;
+      // lazy load images for this slide
+      loadSlideImages(s);
+      // reveal images inside this slide with stagger
+      const imgs = Array.from(s.querySelectorAll('.collage img'));
+      imgs.forEach((im, idx) => {
+        im.classList.remove('show');
+        setTimeout(()=>{ im.classList.add('show'); }, 200 * idx + 120);
+      });
+    }
+    index = i;
+    // If last slide reached, stop auto
+    if(index === slides.length -1) stopAuto();
+  }
+
+  // Auto progression
+  function startAuto(){
+    stopAuto();
+    timer = setInterval(()=>{
+      if(index < slides.length -1){
+        show(index + 1);
+      } else {
+        stopAuto();
+      }
+    }, SLIDE_DURATION);
+  }
+  function stopAuto(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  // initial show
+  show(0);
+  // try autoplay; if blocked, show overlay to require click
+  (async function tryAutoplay(){
     try {
       await audio.play();
-      startOverlay.style.display='none';
+      // autoplay worked; start auto
+      startAuto();
     } catch(e){
-      // blocked -> show overlay so user can tap once
-      startOverlay.style.display='flex';
+      // blocked -> show overlay to request a tap
+      startOverlay.style.display = 'flex';
     }
-  }
-  // start button if needed
-  document.getElementById('startBtn')?.addEventListener('click', ()=> {
-    startOverlay.style.display='none';
+  })();
+
+  // start button
+  startBtn?.addEventListener('click', ()=>{
+    startOverlay.style.display = 'none';
     audio.play().catch(()=>{});
     startAuto();
   });
 
-  // show initial slide
-  function show(i){
-    slides.forEach(s=>s.classList.remove('active'));
-    slides[i].classList.add('active');
-    idx = i;
-    // when last slide reached, stop timer (do not loop)
-    if(idx === slides.length -1) stopAuto();
-  }
-
-  // auto progression
-  function startAuto(){
-    stopAuto();
-    timer = setInterval(()=>{
-      if(idx < slides.length -1){
-        show(idx+1);
-      } else {
-        stopAuto();
-      }
-    }, DURATION);
-  }
-  function stopAuto(){ if(timer){ clearInterval(timer); timer = null; } }
-
-  // initial
-  show(0);
-  tryAutoplay();
-  startAuto();
+  // fallback: if user taps anywhere once, start audio & slideshow
+  document.body.addEventListener('click', function oncePlay(){
+    if(!timer){
+      audio.play().catch(()=>{});
+      startAuto();
+    }
+    document.body.removeEventListener('click', oncePlay);
+  }, { once:true });
 
   // controls
   pauseBtn.addEventListener('click', ()=>{
-    if(timer){ stopAuto(); pauseBtn.textContent='Reanudar'; } else { startAuto(); pauseBtn.textContent='Pausa'; }
+    if(timer){ stopAuto(); pauseBtn.textContent = 'Reanudar'; } else { startAuto(); pauseBtn.textContent = 'Pausa'; }
   });
-  prev.addEventListener('click', ()=>{
-    if(idx>0) show(idx-1);
-  });
-  next.addEventListener('click', ()=>{
-    if(idx < slides.length-1) show(idx+1);
-  });
+  prevBtn.addEventListener('click', ()=>{ if(index>0){ show(index-1);} });
+  nextBtn.addEventListener('click', ()=>{ if(index < slides.length-1){ show(index+1);} });
 
-  // arrow keys
-  window.addEventListener('keydown', (e)=>{
-    if(e.key === 'ArrowRight') next.click();
-    if(e.key === 'ArrowLeft') prev.click();
-  });
+  // keyboard support
+  window.addEventListener('keydown', (e)=>{ if(e.key === 'ArrowRight') nextBtn.click(); if(e.key === 'ArrowLeft') prevBtn.click(); });
 
-  // modal open/close
-  showCipher?.addEventListener('click', ()=>{ modalBack.classList.add('show'); modalBack.setAttribute('aria-hidden','false'); keyInput.focus(); });
+  // open cipher modal
+  if(openCipher){
+    openCipher.addEventListener('click', ()=>{ modalBack.classList.add('show'); modalBack.setAttribute('aria-hidden','false'); keyInput.focus(); });
+  }
   closeModal.addEventListener('click', ()=>{ modalBack.classList.remove('show'); modalBack.setAttribute('aria-hidden','true'); decResult.textContent=''; keyInput.value=''; });
 
-  // Vigenere decode (ciphertext is uppercase with spaces)
+  // Vigenere decode
   function decodeVigenere(ct, key){
-    ct = ct.toUpperCase();
+    ct = (ct||'').toUpperCase();
     key = (key||'').toUpperCase().replace(/[^A-Z]/g,'');
     if(!key) return '';
     let res = '';
@@ -320,34 +393,24 @@
   }
 
   decBtn.addEventListener('click', ()=>{
-    const k = keyInput.value.trim();
-    if(!k){ decResult.textContent='Introduce una clave.'; decResult.style.color='var(--muted)'; return; }
-    const decoded = decodeVigenere('VF EGNEDF YFVH IF DUTPBQ', k);
-    if(decoded){
-      // expected message: "EL REGALO ESTA EN MAGNUM" or final personal message
-      // show localized final message if key correct (we check contains 'EL REGALO' or exact)
-      if(decoded.replace(/\s+/g,'').toUpperCase().includes('ELREGALO')){
-        decResult.style.color='green';
-        decResult.textContent = 'EL REGALO ESTÁ EN MAGNUM';
-        // also show the romantic message and animate
-        setTimeout(()=> {
-          decResult.textContent += '\\n\\nPor más aventuras juntos ❤️';
-          decResult.style.whiteSpace='pre-line';
-        }, 500);
-      } else {
-        decResult.style.color='var(--text)';
-        decResult.textContent = decoded;
-      }
+    const key = keyInput.value.trim();
+    if(!key){ decResult.textContent = 'Introduce una clave.'; decResult.style.color='var(--muted)'; return; }
+    const decoded = decodeVigenere('VF EGNEDF YFVH IF DUTPBQ', key);
+    if(!decoded){ decResult.textContent = 'No se pudo descifrar.'; return; }
+    // If decoded contains expected phrase "EL REGALO"
+    if(decoded.toUpperCase().includes('EL REGALO')){
+      decResult.style.color = '#2a8f5a';
+      decResult.innerText = decoded + '\\n\\nPor más aventuras juntos ❤️';
+      decResult.style.whiteSpace = 'pre-line';
     } else {
-      decResult.textContent = 'No se pudo descifrar.';
+      decResult.style.color = 'var(--text)';
+      decResult.textContent = decoded;
     }
   });
 
   // accessibility: close modal on ESC
   window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal.click(); } });
 
-  // If autoplay failed and user hasn't clicked start overlay, still allow pressing anywhere to start music & slideshow
-  document.body.addEventListener('click', function onFirst(){ audio.play().catch(()=>{}); startAuto(); document.body.removeEventListener('click', onFirst); }, { once:true });
 })();
 </script>
 </body>
